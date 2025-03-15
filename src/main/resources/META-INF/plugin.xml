@@ -16,8 +16,4 @@
             <keyboard-shortcut  keymap="$default" first-keystroke="control alt A" second-keystroke="D"/>
         </action>
     </actions>
-
-    <applicationListeners>
-        <listener class="com.github.mikrise2.actiongame.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
 </idea-plugin>
