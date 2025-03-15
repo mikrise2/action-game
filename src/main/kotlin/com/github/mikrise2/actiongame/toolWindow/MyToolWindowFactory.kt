@@ -9,7 +9,10 @@ import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
 import com.github.mikrise2.actiongame.MyBundle
+import com.github.mikrise2.actiongame.actions.ActionHandler
+import com.github.mikrise2.actiongame.actions.ActionService
 import com.github.mikrise2.actiongame.services.MyProjectService
+import com.intellij.openapi.actionSystem.ActionManager
 import javax.swing.JButton
 
 
@@ -29,17 +32,34 @@ class MyToolWindowFactory : ToolWindowFactory {
 
     class MyToolWindow(toolWindow: ToolWindow) {
 
+        private var label: JBLabel = JBLabel()
         private val service = toolWindow.project.service<MyProjectService>()
+        private val actionService = toolWindow.project.service<ActionService>()
+        private val next = JButton("Next")
 
         fun getContent() = JBPanel<JBPanel<*>>().apply {
-            val label = JBLabel(MyBundle.message("randomLabel", "?"))
+            label = JBLabel(MyBundle.message("randomLabel", "?"))
 
             add(label)
-            add(JButton(MyBundle.message("shuffle")).apply {
-                addActionListener {
-                    label.text = MyBundle.message("randomLabel", service.getRandomNumber())
-                }
-            })
+            add(next)
+            updateAction(false)
+            next.addActionListener {
+                updateAction(false)
+            }
+        }
+
+        fun updateAction(addButton: Boolean = true) {
+            if (addButton) {
+                label.text = "Congratulations!"
+            } else
+                getNextAction()
+        }
+
+        private fun getNextAction() {
+            val action = actionService.getRandomAction()
+            label.text = action.templatePresentation.description
+            val actionId = ActionManager.getInstance().getId(action) ?: error("No action found")
+            ActionHandler(actionId, this@MyToolWindow)
         }
     }
 }
