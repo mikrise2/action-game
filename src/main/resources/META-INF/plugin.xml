@@ -11,6 +11,11 @@
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.mikrise2.actiongame.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
     </extensions>
+    <actions>
+        <action id="DisableSearchAction" class="com.github.mikrise2.actiongame.actions.DisableSearchAction">
+            <keyboard-shortcut  keymap="$default" first-keystroke="control alt A" second-keystroke="D"/>
+        </action>
+    </actions>
 
     <applicationListeners>
         <listener class="com.github.mikrise2.actiongame.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
